@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+import datetime as dt
 # чтобы звуки воспроизодились без задержки
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
@@ -37,6 +38,11 @@ inital_game_on = False
 win = False
 turn = 1
 victory_played = False
+
+
+def record_result(winner):
+    with open('results.txt', 'a', encoding='utf8') as file:
+        print(f"{dt.datetime.now()}: {winner}", file=file)
 
 
 def draw_error_font():      # функция рисования текста при застрявании шарика
@@ -335,6 +341,7 @@ while running:
         if not victory_played:
             victory.play()
             victory_played = True
+            record_result(res)
     if keys[pygame.K_SPACE]:     # перезагрузка игры
         game_on = True
         pygame.mixer.music.play(-1)
